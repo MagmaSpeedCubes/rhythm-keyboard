@@ -18,7 +18,7 @@ public class Levels : MonoBehaviour
     [SerializeField] private Image LevelPreviewImage;
     [SerializeField] private AudioSource LevelPreviewAudio;
 
-    public void Update()
+    public void Refresh()
     {
         LevelNameText.text = levelNames[index];
         LevelInfoText.text = "Difficulty: " + levelDifficulties[index] + " | BPM: " + levelBPM[index] + " | Score: " + levelScores[index];
@@ -32,7 +32,7 @@ public class Levels : MonoBehaviour
             LevelPreviewImage.sprite = null;
         }
         
-        
+
         if (levelPreviewMusic[index] != null)
         {
             LevelPreviewAudio.clip = levelPreviewMusic[index];
@@ -61,7 +61,7 @@ public class Levels : MonoBehaviour
         {
             index = 0; // Loop back to the first level
         }
-        Update();
+        Refresh();
     }
 
     public void PreviousLevel()
@@ -74,14 +74,20 @@ public class Levels : MonoBehaviour
         {
             index = levelNames.Length - 1; // Loop back to the last level
         }
-        Update();
+        Refresh();
     }
 
-
+    public void StopAudio()
+    {
+        if (LevelPreviewAudio.isPlaying)
+        {
+            LevelPreviewAudio.Stop();
+        }
+    }
 
     void Start()
     {
-        Update();
+        Refresh();
     }
 
 

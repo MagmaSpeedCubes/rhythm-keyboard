@@ -2,8 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
+
 public class KeyButton : MonoBehaviour {
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip note;
 	public KeyCode key;
 
 	public Button button {get; private set;}
@@ -35,13 +38,18 @@ public class KeyButton : MonoBehaviour {
 		}
 	}
 
-	void Up() {
-		StartColorTween(button.colors.normalColor, false);
+    void Up()
+    {
+        StartColorTween(button.colors.normalColor, false);
+        audioSource.Stop();
 	}
 
-	void Down() {
-		StartColorTween(button.colors.pressedColor, false);
-		button.onClick.Invoke();
+    void Down()
+    {
+        StartColorTween(button.colors.pressedColor, false);
+        button.onClick.Invoke();
+        audioSource.clip = note;
+        audioSource.Play();
 	}
 
 	void StartColorTween(Color targetColor, bool instant) {
