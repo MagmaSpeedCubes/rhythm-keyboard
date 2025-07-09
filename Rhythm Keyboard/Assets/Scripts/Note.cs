@@ -9,15 +9,48 @@ public class Note : MonoBehaviour
     //adjust these later based on gameplay testing
     private int earlyTolerance = 1;
     private double lateTolerance = 0.25;
-    private int startTime;
-    private bool isHoldNote;
-    private int endTime;
 
+    
+    public int startTime;
+    
+    public int endTime;
+
+    private bool isHoldNote;
+
+    //time is stored in beats
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        SetNoteLength();
         
     }
+
+
+    void Update()
+    {
+                
+        double distanceMultiplier = GameInfo.BPM / 60;
+
+        double yOffset = 3.6; // adjust as needed
+
+        float noteHeight = transform.localScale.y;
+        float bottomY = (float)(distanceMultiplier * (startTime - GameInfo.beatsElapsed) + yOffset);
+
+        // Offset by half the height so the bottom stays at bottomY
+        float centerY = bottomY + noteHeight / 2f;
+
+        transform.position = new Vector3(transform.position.x, centerY, transform.position.z);
+
+        if (endTime < GameInfo.beatsElapsed)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f, 0.5f);
+        }
+
+        if (endTime < GameInfo.beatsElapsed - 4)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     private void SetNoteLength()
     {

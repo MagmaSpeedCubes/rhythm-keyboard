@@ -31,7 +31,7 @@ public class Levels : MonoBehaviour
         {
             LevelPreviewImage.sprite = null;
         }
-        
+
 
         if (levelPreviewMusic[index] != null)
         {
@@ -46,6 +46,7 @@ public class Levels : MonoBehaviour
             LevelPreviewAudio.Stop();
 
         }
+        GameInfo.initialBPM = levelBPM[index];
 
 
 

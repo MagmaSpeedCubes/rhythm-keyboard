@@ -5,7 +5,7 @@ using TMPro;
 public class Difficulty : MonoBehaviour
 {
     public int index;
-    
+
     private readonly string[] difficulties = { "Base", "Pro", "Max", "Ultra" };
 
     private readonly string[] descriptions ={
@@ -31,6 +31,9 @@ public class Difficulty : MonoBehaviour
         modeText.color = colors[index];
         descriptionText.text = descriptions[index];
         descriptionText.color = colors[index];
+        GameInfo.BPM = (int)(GameInfo.initialBPM * bpmMultipliers[index]);
+        Debug.Log(bpmMultipliers[index]);
+        GameInfo.speed = bpmMultipliers[index];
     }
 
 
