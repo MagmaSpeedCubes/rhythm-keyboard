@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
         if (GameInfo.gameActive)
         {
             GameInfo.beatsElapsed += Time.deltaTime * GameInfo.BPM / 60;
-            Debug.Log("BPM:" + GameInfo.BPM);
+
         }
         else
         {
