@@ -28,9 +28,9 @@ public class Note : MonoBehaviour
     void Update()
     {
                 
-        double distanceMultiplier = GameInfo.BPM / 60;
+        double distanceMultiplier = 2;
 
-        double yOffset = 3.6; // adjust as needed
+        double yOffset = 0; // adjust as needed
 
         float noteHeight = transform.localScale.y;
         float bottomY = (float)(distanceMultiplier * (startTime - GameInfo.beatsElapsed) + yOffset);
@@ -40,6 +40,10 @@ public class Note : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, centerY, transform.position.z);
 
+        if (startTime < GameInfo.beatsElapsed)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, 0.5f);
+        }
         if (endTime < GameInfo.beatsElapsed)
         {
             GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f, 0.5f);
