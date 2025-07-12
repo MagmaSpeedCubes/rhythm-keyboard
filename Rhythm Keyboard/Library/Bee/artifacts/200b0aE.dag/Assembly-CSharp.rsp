@@ -446,6 +446,8 @@
 "Assets/Scripts/GameHandler.cs"
 "Assets/Scripts/GameInfo.cs"
 "Assets/Scripts/KeyButton.cs"
+"Assets/Scripts/KeyColor.cs"
+"Assets/Scripts/LevelRenderer.cs"
 "Assets/Scripts/Levels.cs"
 "Assets/Scripts/MenuButton.cs"
 "Assets/Scripts/Note.cs"

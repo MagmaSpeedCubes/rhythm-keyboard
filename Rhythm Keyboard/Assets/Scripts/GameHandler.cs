@@ -63,6 +63,9 @@ public class GameHandler : MonoBehaviour
     {
         GameInfo.gameActive = true;
         GameInfo.beatsElapsed = 0;
+
+        LevelRenderer levelRenderer = GetComponent<LevelRenderer>();
+        levelRenderer.RenderLevel();
         //Base notes: F4, G4, A4, B4, C5
         //Pro notes: C4, D4, E4
         //Max notes: Cs4, Ds4, Fs4, Gs4, As4
@@ -102,13 +105,14 @@ public class GameHandler : MonoBehaviour
 
         for (int i = 0; i < sequence.Length; i += 2)
         {
-            GameObject newNote = Instantiate(notePrefab, note.transform.position, Quaternion.identity);
+            Vector3 newPosition = new Vector3(note.transform.position.x, note.transform.position.y, note.transform.position.z + 1f);
+            GameObject newNote = Instantiate(notePrefab, newPosition, Quaternion.identity);
             Note noteScript = newNote.GetComponent<Note>();
             noteScript.startTime = sequence[i];
             noteScript.endTime = sequence[i + 1];
 
-            Debug.Log("Spawned note " + note.name + " from time " + noteScript.startTime + " to " + noteScript.endTime);
-            //spawns each note 
+
+
         }
 
         yield break;

@@ -10,6 +10,7 @@ public class KeyButton : MonoBehaviour {
 	public KeyCode key;
 
 	public Button button {get; private set;}
+	[SerializeField] private GameObject correspondingKey;
 
 	Graphic targetGraphic;
 	Color normalColor;
@@ -41,12 +42,16 @@ public class KeyButton : MonoBehaviour {
     void Up()
     {
         StartColorTween(button.colors.normalColor, false);
-        audioSource.Stop();
+		correspondingKey.GetComponent<KeyColor>().SetColor("normal");
+
+		audioSource.Stop();
 	}
 
     void Down()
     {
         StartColorTween(button.colors.pressedColor, false);
+		correspondingKey.GetComponent<KeyColor>().SetColor("pressed");
+
         button.onClick.Invoke();
         audioSource.clip = note;
         audioSource.Play();

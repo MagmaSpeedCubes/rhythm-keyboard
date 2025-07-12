@@ -48,6 +48,8 @@ public class Levels : MonoBehaviour
         }
         GameInfo.initialBPM = levelBPM[index];
 
+        GameInfo.selectedLevel = index;
+
 
 
     }
