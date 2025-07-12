@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameInfo
 {
 
+    public static readonly double levelStartDelay = 3;
     public static int selectedLevel = 0;
     public static int difficulty = 0;
     //0 = Base, 1 = Pro, 2 = Max

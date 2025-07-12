@@ -59,13 +59,26 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void StartGameButton()
+    {
+        if (!GameInfo.gameActive)
+        {
+            StartCoroutine(StartGame());
+        }
+        else
+        {
+            Debug.LogWarning("Game is already active.");
+        }
+    }
+    public IEnumerator StartGame()
     {
         GameInfo.gameActive = true;
         GameInfo.beatsElapsed = 0;
 
         LevelRenderer levelRenderer = GetComponent<LevelRenderer>();
         levelRenderer.RenderLevel();
+
+        yield return new WaitForSeconds((float)GameInfo.levelStartDelay);
         //Base notes: F4, G4, A4, B4, C5
         //Pro notes: C4, D4, E4
         //Max notes: Cs4, Ds4, Fs4, Gs4, As4
@@ -91,7 +104,8 @@ public class GameHandler : MonoBehaviour
             }
         }
 
-        
+        yield return null;
+
 
 
 
@@ -111,7 +125,7 @@ public class GameHandler : MonoBehaviour
             noteScript.startTime = sequence[i];
             noteScript.endTime = sequence[i + 1];
 
-
+            
 
         }
 

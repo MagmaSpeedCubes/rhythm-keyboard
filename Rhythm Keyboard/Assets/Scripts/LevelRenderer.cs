@@ -5,6 +5,10 @@ public class LevelRenderer : MonoBehaviour
     [SerializeField] private VideoClip[] levelBackgroundVideos;
     [SerializeField] private float[] levelLengths;
 
+    [SerializeField] private AudioClip[] levelMusic;
+    [SerializeField] private float[] levelMusicOffsetTimes;
+    [SerializeField] private AudioSource levelAudioSource;
+
     private double[][] level0Notes = new double[][]
     {
         new double[] {}, //C4
@@ -19,7 +23,7 @@ public class LevelRenderer : MonoBehaviour
         new double[] {1, 2, 3, 5, 8, 10 }, //A4
         new double[] {1, 2, 3, 5, 8, 10 }, //As4
         new double[] {1, 2, 3, 5, 8, 10 }, //B4
-        new double[] {0, 0.9166666666, 3.6666666667, 4.5833333333, 7.3333333333, 8.25, 11, 11.9166666667} //C5
+        new double[] {0, 11/12, 33/12, 44/12, 44/12, 55/12, 77/12, 88/12, 88/12, 99/12, 121/12, 12*11/12, 12*11/12, 13*11/12, 15*11/12, 16*11/12, 16*11/12, 17*11/12} //C5
         //This is a placeholder sequence, replace with actual sequences.
     };
 
@@ -31,6 +35,9 @@ public class LevelRenderer : MonoBehaviour
             GameHandler gameHandler = GetComponent<GameHandler>();
             gameHandler.ImportNoteSequence(level0Notes);
         }
+        levelAudioSource.clip = levelMusic[levelIndex];
+        levelAudioSource.PlayDelayed((float)(GameInfo.levelStartDelay + levelMusicOffsetTimes[levelIndex]));
+
     }
     
 }
