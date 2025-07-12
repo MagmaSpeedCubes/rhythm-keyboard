@@ -443,6 +443,7 @@
 -analyzer:"/Applications/Unity/Hub/Editor/6000.0.46f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"/Applications/Unity/Hub/Editor/6000.0.46f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
 "Assets/Scripts/Difficulty.cs"
+"Assets/Scripts/DisableOnStart.cs"
 "Assets/Scripts/GameHandler.cs"
 "Assets/Scripts/GameInfo.cs"
 "Assets/Scripts/KeyButton.cs"

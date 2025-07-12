@@ -12,6 +12,8 @@ public class KeyButton : MonoBehaviour {
 	public Button button {get; private set;}
 	[SerializeField] private GameObject correspondingKey;
 
+	[SerializeField] private GameHandler gameHandler;
+	[SerializeField] private int keyIndex;
 	Graphic targetGraphic;
 	Color normalColor;
 
@@ -51,6 +53,8 @@ public class KeyButton : MonoBehaviour {
     {
         StartColorTween(button.colors.pressedColor, false);
 		correspondingKey.GetComponent<KeyColor>().SetColor("pressed");
+
+		gameHandler.HandleKeyPress(keyIndex, GameInfo.beatsElapsed, correspondingKey);
 
         button.onClick.Invoke();
         audioSource.clip = note;

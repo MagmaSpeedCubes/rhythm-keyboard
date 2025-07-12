@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine.UI;
+using TMPro;
 public class GameHandler : MonoBehaviour
 {
     [SerializeField] private GameObject notePrefab;
@@ -19,6 +22,14 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private GameObject B4;
     [SerializeField] private GameObject C5;
 
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI comboText;
+    [SerializeField] private TextMeshProUGUI noteText;
+    [SerializeField] private Color[] noteTextColors; 
+
+
+
+    
     //private double[][] noteSequence;
 
     private double[][] noteSequence = new double[][]
@@ -125,7 +136,7 @@ public class GameHandler : MonoBehaviour
             noteScript.startTime = sequence[i];
             noteScript.endTime = sequence[i + 1];
 
-            
+
 
         }
 
@@ -136,6 +147,85 @@ public class GameHandler : MonoBehaviour
     public void ImportNoteSequence(double[][] sequence)
     {
         noteSequence = sequence;
-    
+
+    }
+
+    public void HandleKeyPress(int keyIndex, double hitTime, GameObject key)
+    {
+        //note hit times are in beats, but tolerances are in milliseconds
+        
+
+        double[] keySequence = noteSequence[keyIndex];
+        for(int i=0; i<keySequence.Length; i+=2)
+        {
+            if (Mathf.Abs((float)(keySequence[i] - hitTime)) < (float) GameInfo.noteTolerances[GameInfo.noteTolerances.Length - 1] / 60000 * GameInfo.BPM)
+            {
+                double startTime = keySequence[i];
+                double endTime = keySequence[i + 1];
+                if (endTime - startTime > 1)
+                {
+                    KeyColor keyColor = key.GetComponent<KeyColor>();
+                    if (keyColor != null)
+                    {
+                        keyColor.SetColor("hold");
+                    }
+                }
+                else
+                {
+                    KeyColor keyColor = key.GetComponent<KeyColor>();
+                    if (keyColor != null)
+                    {
+                        keyColor.SetColor("tap");
+                    }
+                }
+                //set the color of the key based on the note type
+
+
+                int noteIndex = GameInfo.noteTolerances.Length - 1;
+
+                for (int j = GameInfo.noteTolerances.Length - 1; j >= 0; j--)
+                {
+
+                    //loop starts at most lenient tolerances and goes forward
+                    if (Mathf.Abs((float)(keySequence[i] - hitTime)) <= (float) GameInfo.noteTolerances[j]  / 60000 * GameInfo.BPM)
+                    {
+                        noteIndex = j;
+                    }
+                }
+
+                //calculate the note type based on the hit time
+
+                GameInfo.score += GameInfo.scoreMultipliers[noteIndex];
+                if (noteIndex > GameInfo.noteTolerances.Length - 3)
+                {
+                    GameInfo.combo++;
+
+                }
+                else
+                {
+                    GameInfo.combo = 0;
+                    //reset combo if the note is hit too early or late
+                    //this occurs when the note is hit with the "mediocre" or "abysmal" tolerances
+                }
+
+                scoreText.text = "Score: " + GameInfo.score;
+                comboText.text = "Combo: " + GameInfo.combo;
+                noteText.text = "" + GameInfo.noteTypes[noteIndex] + "";
+                noteText.color = noteTextColors[noteIndex];
+                //updates the text
+
+
+                //note hit
+            }
+            else
+            {
+                KeyColor keyColor = key.GetComponent<KeyColor>();
+                if (keyColor != null)
+                {
+                    keyColor.SetColor("pressed");
+                }
+            }
+        }
+
     }
 }

@@ -59,7 +59,7 @@ public class Note : MonoBehaviour
     private void SetNoteLength()
     {
         double duration = endTime - startTime;
-        if (duration < 1) { duration = 1; } // Prevent zero or negative scale
+        //if (duration < 1) { duration = 1; } // Prevent zero or negative scale
         if (duration == 1) { isHoldNote = false; } // If the duration is 1, it's not a hold note
         else { isHoldNote = true; }
 
