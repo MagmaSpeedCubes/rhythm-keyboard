@@ -12,7 +12,12 @@ public class Note : MonoBehaviour
 
     public double endTime;
 
+    public GameHandler gameHandler;
+    public int keyIndex;
+    public GameObject correspondingKey;
+    private bool pressed = false;
     private bool isHoldNote;
+    
 
     //time is stored in beats
     void Start()
@@ -40,6 +45,10 @@ public class Note : MonoBehaviour
         if (startTime < GameInfo.beatsElapsed)
         {
             GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, 0.5f);
+            if (GameInfo.debugMode)
+            {
+                AutoTapDebug();
+            }
         }
         if (endTime < GameInfo.beatsElapsed)
         {
@@ -61,8 +70,17 @@ public class Note : MonoBehaviour
         else { isHoldNote = true; }
 
         Vector3 scale = transform.localScale;
-        scale.y = (float) (duration * GameInfo.noteSpeed);
+        scale.y = (float)(duration * GameInfo.noteSpeed);
         transform.localScale = scale;
+    }
+
+    private void AutoTapDebug()
+    {
+        if (gameHandler != null && !pressed)
+        {
+            gameHandler.HandleKeyPress(keyIndex, GameInfo.beatsElapsed, correspondingKey);
+            pressed = true;
+        }
     }
 
 

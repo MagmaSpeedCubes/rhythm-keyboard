@@ -4,6 +4,7 @@ public class LevelRenderer : MonoBehaviour
 {
     [SerializeField] private VideoClip[] levelBackgroundVideos;
     [SerializeField] private float[] levelLengths;
+    [SerializeField] private int[] levelPerfectScores;
 
     [SerializeField] private AudioClip[] levelMusic;
     [SerializeField] private float[] levelMusicOffsetTimes;
@@ -38,6 +39,8 @@ public class LevelRenderer : MonoBehaviour
         }
         levelAudioSource.clip = levelMusic[levelIndex];
         levelAudioSource.PlayDelayed((float)(GameInfo.levelStartDelay + levelMusicOffsetTimes[levelIndex]));
+        GameInfo.levelLength = levelLengths[levelIndex];
+        GameInfo.levelPerfectScore = levelPerfectScores[levelIndex];
 
     }
     

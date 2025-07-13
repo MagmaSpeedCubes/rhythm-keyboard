@@ -25,11 +25,12 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI comboText;
     [SerializeField] private TextMeshProUGUI noteText;
-    [SerializeField] private Color[] noteTextColors; 
+    [SerializeField] private Color[] noteTextColors;
 
 
 
-    
+
+
     //private double[][] noteSequence;
 
     private double[][] noteSequence = new double[][]
@@ -67,6 +68,16 @@ public class GameHandler : MonoBehaviour
             Debug.LogWarning("Multiple GameHandler instances detected. Destroying duplicate.");
             Destroy(gameObject);
             return;
+        }
+    }
+
+
+    void Update()
+    {
+        if (GameInfo.beatsElapsed > GameInfo.levelLength)
+        {
+            EndScreen endScreen = GetComponent<EndScreen>();
+            endScreen.EndLevel();
         }
     }
 
@@ -145,6 +156,9 @@ public class GameHandler : MonoBehaviour
             Note noteScript = newNote.GetComponent<Note>();
             noteScript.startTime = sequence[i];
             noteScript.endTime = sequence[i + 1];
+            noteScript.gameHandler = this;
+            noteScript.keyIndex = System.Array.IndexOf(noteSequence, sequence);
+            noteScript.correspondingKey = note;
 
 
 
@@ -219,6 +233,8 @@ public class GameHandler : MonoBehaviour
                     GameInfo.combo = 0;
                 }
 
+                GameInfo.score += GameInfo.combo;
+
                 scoreText.text = "Score: " + GameInfo.score;
                 comboText.text = "Combo: " + GameInfo.combo;
                 noteText.text = "" + GameInfo.noteTypes[noteIndex] + "";
@@ -234,4 +250,6 @@ public class GameHandler : MonoBehaviour
             }
         }
     }
+
+
 }

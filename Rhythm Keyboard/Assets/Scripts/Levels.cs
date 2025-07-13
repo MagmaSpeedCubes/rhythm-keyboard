@@ -22,6 +22,7 @@ public class Levels : MonoBehaviour
     {
         LevelNameText.text = levelNames[index];
         LevelInfoText.text = "Difficulty: " + levelDifficulties[index] + " | BPM: " + levelBPM[index] + " | Score: " + levelScores[index];
+        Debug.Log("Selected Level: " + levelNames[index] + " | Difficulty: " + levelDifficulties[index] + " | BPM: " + levelBPM[index] + " | Score: " + levelScores[index]);
         if (levelPreviewImages[index] != null)
         {
             LevelPreviewImage.sprite = levelPreviewImages[index];
