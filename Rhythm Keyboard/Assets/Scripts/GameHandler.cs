@@ -83,16 +83,21 @@ public class GameHandler : MonoBehaviour
     }
     public IEnumerator StartGame()
     {
-        GameInfo.gameActive = true;
-        GameInfo.beatsElapsed = 0;
+
 
         LevelRenderer levelRenderer = GetComponent<LevelRenderer>();
         levelRenderer.RenderLevel();
 
-        yield return new WaitForSeconds((float)GameInfo.levelStartDelay);
+
         //Base notes: F4, G4, A4, B4, C5
         //Pro notes: C4, D4, E4
         //Max notes: Cs4, Ds4, Fs4, Gs4, As4
+        if (GameInfo.selectedLevel == 0)
+        {
+            GameInfo.difficulty = 2;
+            //the tutorial level demos all notes, so max is needed
+        }
+
         StartCoroutine(SpawnNotes(F4, noteSequence[5]));
         StartCoroutine(SpawnNotes(G4, noteSequence[7]));
         StartCoroutine(SpawnNotes(A4, noteSequence[9]));
@@ -114,6 +119,11 @@ public class GameHandler : MonoBehaviour
                 //spawn max notes
             }
         }
+
+
+        GameInfo.beatsElapsed = 0;
+        GameInfo.gameActive = true;
+
 
         yield return null;
 
@@ -152,70 +162,67 @@ public class GameHandler : MonoBehaviour
 
     public void HandleKeyPress(int keyIndex, double hitTime, GameObject key)
     {
-        //note hit times are in beats, but tolerances are in milliseconds
-        
-
         double[] keySequence = noteSequence[keyIndex];
-        for(int i=0; i<keySequence.Length; i+=2)
+
+        int closestIndex = -1;
+        double smallestDiff = double.MaxValue;
+
+        // Find the closest note
+        for (int i = 0; i < keySequence.Length; i += 2)
         {
-            if (Mathf.Abs((float)(keySequence[i] - hitTime)) < (float) GameInfo.noteTolerances[GameInfo.noteTolerances.Length - 1] / 60000 * GameInfo.BPM)
+            double diff = Mathf.Abs((float)(keySequence[i] - hitTime));
+            if (diff < smallestDiff)
             {
-                double startTime = keySequence[i];
-                double endTime = keySequence[i + 1];
+                smallestDiff = diff;
+                closestIndex = i;
+            }
+        }
+
+        if (closestIndex != -1)
+        {
+            // Check if the closest note is within the largest tolerance window
+            double toleranceBeats = (double)GameInfo.noteTolerances[GameInfo.noteTolerances.Length - 1] / 60000 * GameInfo.BPM;
+            if (smallestDiff < toleranceBeats)
+            {
+                Debug.Log("Key " + keyIndex + " hit at time: " + hitTime);
+
+                double startTime = keySequence[closestIndex];
+                double endTime = keySequence[closestIndex + 1];
+                KeyColor keyColor = key.GetComponent<KeyColor>();
                 if (endTime - startTime > 1)
                 {
-                    KeyColor keyColor = key.GetComponent<KeyColor>();
-                    if (keyColor != null)
-                    {
-                        keyColor.SetColor("hold");
-                    }
+                    if (keyColor != null) keyColor.SetColor("hold");
+                    Debug.Log("Type: Hold");
                 }
                 else
                 {
-                    KeyColor keyColor = key.GetComponent<KeyColor>();
-                    if (keyColor != null)
-                    {
-                        keyColor.SetColor("tap");
-                    }
+                    if (keyColor != null) keyColor.SetColor("tap");
+                    Debug.Log("Type: Tap");
                 }
-                //set the color of the key based on the note type
-
 
                 int noteIndex = GameInfo.noteTolerances.Length - 1;
-
                 for (int j = GameInfo.noteTolerances.Length - 1; j >= 0; j--)
                 {
-
-                    //loop starts at most lenient tolerances and goes forward
-                    if (Mathf.Abs((float)(keySequence[i] - hitTime)) <= (float) GameInfo.noteTolerances[j]  / 60000 * GameInfo.BPM)
+                    if (Mathf.Abs((float)(keySequence[closestIndex] - hitTime)) <= (float)GameInfo.noteTolerances[j] / 60000 * GameInfo.BPM)
                     {
                         noteIndex = j;
                     }
                 }
 
-                //calculate the note type based on the hit time
-
                 GameInfo.score += GameInfo.scoreMultipliers[noteIndex];
-                if (noteIndex > GameInfo.noteTolerances.Length - 3)
+                if (noteIndex < GameInfo.noteTolerances.Length - 3)
                 {
                     GameInfo.combo++;
-
                 }
                 else
                 {
                     GameInfo.combo = 0;
-                    //reset combo if the note is hit too early or late
-                    //this occurs when the note is hit with the "mediocre" or "abysmal" tolerances
                 }
 
                 scoreText.text = "Score: " + GameInfo.score;
                 comboText.text = "Combo: " + GameInfo.combo;
                 noteText.text = "" + GameInfo.noteTypes[noteIndex] + "";
                 noteText.color = noteTextColors[noteIndex];
-                //updates the text
-
-
-                //note hit
             }
             else
             {
@@ -226,6 +233,5 @@ public class GameHandler : MonoBehaviour
                 }
             }
         }
-
     }
 }

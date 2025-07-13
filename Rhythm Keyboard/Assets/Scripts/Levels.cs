@@ -7,7 +7,7 @@ public class Levels : MonoBehaviour
     public int index = 0;
     public string[] levelNames;
     public int[] levelDifficulties;
-    public int[] levelBPM;
+    public double[] levelBPM;
     public AudioClip[] levelPreviewMusic;
     public Sprite[] levelPreviewImages;
     [SerializeField] private int[] levelScores;

@@ -54,7 +54,11 @@ public class KeyButton : MonoBehaviour {
         StartColorTween(button.colors.pressedColor, false);
 		correspondingKey.GetComponent<KeyColor>().SetColor("pressed");
 
-		gameHandler.HandleKeyPress(keyIndex, GameInfo.beatsElapsed, correspondingKey);
+		if (GameInfo.gameActive)
+		{
+			gameHandler.HandleKeyPress(keyIndex, GameInfo.beatsElapsed, correspondingKey);
+		}
+		
 
         button.onClick.Invoke();
         audioSource.clip = note;
