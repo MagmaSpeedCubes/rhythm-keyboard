@@ -1,2 +1,8 @@
 # rhythm-keyboard
-a rhythm game
+a rhythm game where you use your computer keyboard to play a musical keyboard
+
+play on itch.io
+https://bffwouj3472.itch.io/rhythm-keyboard
+
+
+<img width="1149" height="638" alt="Screenshot 2025-07-14 at 12 24 53 AM" src="https://github.com/user-attachments/assets/f50ab9fd-8056-42ae-94e0-3de8dbf073ee" />
