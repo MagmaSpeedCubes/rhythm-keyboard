@@ -1,5 +1,5 @@
 # rhythm-keyboard
-a rhythm game where you use your computer keyboard to play a musical keyboard
+a rhythm game where you use your computer keyboard to play a musical keyboard \n
 Your game is ranked based on the percentage of a perfect score you score
 
 play on itch.io
